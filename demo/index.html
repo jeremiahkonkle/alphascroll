@@ -24,7 +24,7 @@ $( document ).ready( function() {
 		namesListHTML += '<li data-icon="false"><a href="#"><h3>' + names[i] + '</h3></a></li>';
 	});
 	$( '#mylistview' ).append( namesListHTML );
-	$( '#mylistview' ).listview( 'refresh' ).alphascroll();
+	$( '#mylistview' ).listview( 'refresh' );
 
 });
 </script>
@@ -37,7 +37,7 @@ $( document ).ready( function() {
 		<h1>AlphaScroll</h1>
 	</div>
 	<div data-role="content">
-		<ul id="mylistview" data-role="listview" data-autodividers="true"></ul>
+		<ul id="mylistview" data-role="listview" data-alphascroll="true" data-autodividers="true"></ul>
 	</div>
 	<div data-role="footer" data-position="fixed">
 		<div data-role="navbar">
