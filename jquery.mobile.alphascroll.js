@@ -60,6 +60,13 @@
                     alphaScroll(touch.pageY);
                 });
 
+                $(alphascroll).bind('tap', function (event) {
+                    event.preventDefault();
+
+                    // scroll to divider position
+                    alphaScroll(event.pageY);
+                });
+
                 // bind mouse events to scrollbar (for desktop browsers)
                 $(alphascroll).bind('mousedown', function () {
                     $('.ui-page-active').bind('mousemove', function (event) {
