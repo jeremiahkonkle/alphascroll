@@ -1,6 +1,7 @@
 /*global jQuery */
-/*nomen: false */ (function ($, undefined) {
-
+/*jslint nomen: false */
+(function ($) {
+    "use strict";
     $.widget("mobile.listview", $.mobile.listview, {
         options: {
             alphascroll: false
@@ -21,7 +22,10 @@
                 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
                 shortAlphabet = ['a', 'd', 'g', 'j', 'm', 'p', 's', 'w', 'z'],
                 dividers = [],
-                dividerClass, scrollbar = '';
+                dividerClass,
+                scrollbar = '';
+
+                $('.alphascroll').remove();
             //
             // content = this.content
             //
@@ -33,15 +37,44 @@
             });
             //
             // // create and display the scrollbar
+            function truncateScrollbar () {
+                $('.alphascroll li').each(function (index, value) {
+                    if ($.inArray($(this).html().toLowerCase(), shortAlphabet) < 0) {
+                        $(this).html('&#183;').addClass('truncated');
+                    }
+                });
+            }
 
-            function createScrollbar() {
-                var wrapper, alphascroll;
+             // do the scroll
+
+            function alphaScroll (y) {
+                $('.alphascroll-item').each(function () {
+
+                    if (!(y <= $(this).offset().top || y >= $(this).offset().top + $(this).outerHeight())) {
+                        var scroll_id = $(this).attr('id'), letter = scroll_id.split('-'), target = $('.' + letter[1]), position = target.position(), header_height;
+                        // offset scroll-top if header is displayed
+                        if ($('.ui-page-active [data-role="header"]').hasClass('ui-fixed-hidden')) {
+                            header_height = 0;
+                        }
+                        else {
+                            header_height = $('.ui-page-active [data-role="header"]').height();
+                        }
+
+                        // scroll the page
+                        $.mobile.silentScroll(position.top - header_height);
+                    }
+                });
+            }
+
+            function createScrollbar () {
+                var wrapper, alphascroll, selfdatatheme = $(self).attr("data-theme");
                 // generate scrollbar HTML
                 $(alphabet).each(function (index, value) {
                     // attach the alphascroll-item class to each letter if there is a corresponding divider (acts as a link)
                     if ($.inArray(value, dividers) > -1) {
                         scrollbar += '<li id="alphascroll-' + value + '" class="alphascroll-item" unselectable="on">' + value.toUpperCase() + '</li>';
-                    } else {
+                    }
+                    else {
                         scrollbar += '<li id="alphascroll-' + value + '" unselectable="on">' + value.toUpperCase() + '</li>';
                     }
                 });
@@ -49,9 +82,9 @@
                 // attach scrollbar to page
                 $(self).wrap('<div />');
                 wrapper = self.parent();
-                $(wrapper).prepend('<ul class="alphascroll">' + scrollbar + '</ul>');
-                alphascroll = $(self).closest('div').children('.alphascroll');
 
+                $(wrapper).prepend('<ul class="alphascroll">' + scrollbar + '</ul>');
+                alphascroll = $(self).closest('div').children('.alphascroll').addClass("ui-alphascroll-" + (selfdatatheme !== undefined && selfdatatheme !== '' ? selfdatatheme : 'a'));
                 // bind touch event to scrollbar (for touch devices)
                 $(alphascroll).bind('touchmove', function (event) {
                     event.preventDefault();
@@ -108,37 +141,7 @@
                 createScrollbar();
             });
 
-            function truncateScrollbar() {
-                $('.alphascroll li').each(function (index, value) {
-                    if ($.inArray($(this).html().toLowerCase(), shortAlphabet) < 0) {
-                        $(this).html('&#183;').addClass('truncated');
-                    }
-                });
-            }
 
-            // do the scroll
-
-            function alphaScroll(y) {
-                $('.alphascroll-item').each(function () {
-
-                    if (!(y <= $(this).offset().top || y >= $(this).offset().top + $(this).outerHeight())) {
-                        var scroll_id = $(this).attr('id'),
-                            letter = scroll_id.split('-'),
-                            target = $('.' + letter[1]),
-                            position = target.position(),
-                            header_height;
-                        // offset scroll-top if header is displayed
-                        if ($('.ui-page-active [data-role="header"]').hasClass('ui-fixed-hidden')) {
-                            header_height = 0;
-                        } else {
-                            header_height = $('.ui-page-active [data-role="header"]').height();
-                        }
-
-                        // scroll the page
-                        $.mobile.silentScroll(position.top - header_height);
-                    }
-                });
-            }
 
             // generate scrollbar on invokation
             createScrollbar();
@@ -157,4 +160,4 @@
 
 })(jQuery);
 
-/*nomen: true */
+/*jslint nomen: true */
