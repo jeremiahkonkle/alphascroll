@@ -49,6 +49,9 @@
                             if (currentalpha !== undefined) {
                                 finalalpha = currentalpha;
                             }
+                             if ($('.' + letter).size() > 0){
+                                 finalalpha = letter;
+                             }
                             after = false;
                         }
                         else if (after) {
@@ -80,12 +83,8 @@
                             header_height = $('.ui-page-active [data-role="header"]').height();
                         }
                         if (position !== undefined) {
-                            console.log(target);
                             // scroll the page
                             $.mobile.silentScroll(position.top - header_height);
-                        }
-                        else {
-
                         }
                     }
                 });
@@ -98,10 +97,6 @@
                     // attach the alphascroll-item class to each letter if there is a corresponding divider (acts as a link)
                     if ($.inArray(value, dividers) > -1) {
                         scrollbar += '<li id="alphascroll-' + value + '" class="alphascroll-item" unselectable="on">' + value.toUpperCase() + '</li>';
-                    }
-                    else {
-                        scrollbar += '<li id="alphascroll-' + value + '" class="alphascroll-item" unselectable="on">' + value.toUpperCase() + '</li>';
-                        //scrollbar += '<li id="alphascroll-' + value + '" unselectable="on">' + value.toUpperCase() + '</li>';
                     }
                 });
 
