@@ -95,9 +95,9 @@
                 // generate scrollbar HTML
                 $(alphabet).each(function (index, value) {
                     // attach the alphascroll-item class to each letter if there is a corresponding divider (acts as a link)
-                    if ($.inArray(value, dividers) > -1) {
+
                         scrollbar += '<li id="alphascroll-' + value + '" class="alphascroll-item" unselectable="on">' + value.toUpperCase() + '</li>';
-                    }
+
                 });
 
                 // attach scrollbar to page
