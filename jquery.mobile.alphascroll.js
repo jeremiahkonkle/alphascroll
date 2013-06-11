@@ -1,7 +1,6 @@
 /*global jQuery */
 /*jslint nomen: false */
-(function ($) {
-    "use strict";
+(function ($) {"use strict";
     $.widget("mobile.listview", $.mobile.listview, {
         options: {
             alphascroll: false
@@ -18,14 +17,9 @@
         },
 
         _displayList: function () {
-            var self = this.element,
-                alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
-                shortAlphabet = ['a', 'd', 'g', 'j', 'm', 'p', 's', 'w', 'z'],
-                dividers = [],
-                dividerClass,
-                scrollbar = '';
-
-                $('.alphascroll').remove();
+            var self = this.element, alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'], shortAlphabet = ['a', 'd', 'g', 'j', 'm', 'p', 's', 'w', 'z'], dividers = [], dividerClass, scrollbar = '';
+            $(self).unwrap();
+            $('.alphascroll').remove();
             //
             // content = this.content
             //
@@ -45,13 +39,39 @@
                 });
             }
 
-             // do the scroll
+            // do the scroll
+            function findclosest (target) {
+                var after = true, currentalpha, finalalpha;
+                $($('.alphascroll-item').get().reverse()).each(function () {
+                    if (finalalpha === undefined) {
+                        var scroll_id = $(this).attr('id'), letter = scroll_id.split('-')[1];
+                        if (letter === target) {
+                            if (currentalpha !== undefined) {
+                                finalalpha = currentalpha;
+                            }
+                            after = false;
+                        }
+                        else if (after) {
+                            if ($('.' + letter).size() > 0) {
+                                currentalpha = letter;
+                            }
+                        }
+                        else {
+                            if ($('.' + letter).size() > 0) {
+                                finalalpha = letter;
+                            }
+                        }
+                    }
+                });
+
+                return $('.' + finalalpha);
+            }
 
             function alphaScroll (y) {
                 $('.alphascroll-item').each(function () {
 
                     if (!(y <= $(this).offset().top || y >= $(this).offset().top + $(this).outerHeight())) {
-                        var scroll_id = $(this).attr('id'), letter = scroll_id.split('-'), target = $('.' + letter[1]), position = target.position(), header_height;
+                        var scroll_id = $(this).attr('id'), letter = scroll_id.split('-'), target = findclosest(letter[1]), position = target.position(), header_height;
                         // offset scroll-top if header is displayed
                         if ($('.ui-page-active [data-role="header"]').hasClass('ui-fixed-hidden')) {
                             header_height = 0;
@@ -59,9 +79,14 @@
                         else {
                             header_height = $('.ui-page-active [data-role="header"]').height();
                         }
+                        if (position !== undefined) {
+                            console.log(target);
+                            // scroll the page
+                            $.mobile.silentScroll(position.top - header_height);
+                        }
+                        else {
 
-                        // scroll the page
-                        $.mobile.silentScroll(position.top - header_height);
+                        }
                     }
                 });
             }
@@ -75,7 +100,8 @@
                         scrollbar += '<li id="alphascroll-' + value + '" class="alphascroll-item" unselectable="on">' + value.toUpperCase() + '</li>';
                     }
                     else {
-                        scrollbar += '<li id="alphascroll-' + value + '" unselectable="on">' + value.toUpperCase() + '</li>';
+                        scrollbar += '<li id="alphascroll-' + value + '" class="alphascroll-item" unselectable="on">' + value.toUpperCase() + '</li>';
+                        //scrollbar += '<li id="alphascroll-' + value + '" unselectable="on">' + value.toUpperCase() + '</li>';
                     }
                 });
 
@@ -140,8 +166,6 @@
                 scrollbar = '';
                 createScrollbar();
             });
-
-
 
             // generate scrollbar on invokation
             createScrollbar();
