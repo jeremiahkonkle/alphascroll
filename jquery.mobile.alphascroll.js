@@ -117,7 +117,6 @@
                     });
 
                     // attach scrollbar to page
-                     $(self).unwrap();
                     $(self).wrap('<div />');
                     wrapper = self.parent();
 
