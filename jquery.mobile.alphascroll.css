@@ -1,36 +1,48 @@
 .alphascroll {
 	background-color: rgba( 0, 0, 0, 0.6);
-	color: #ddd;
-	text-shadow: none;
-	list-style: none;
-	position: fixed;
-	top: 37px;
-	right: 4px;
-	z-index: 1001;
-	font-size: 11px;
+	color: #4f5253;
+	cursor: pointer;
+	font-size: 0.75em;
 	font-weight: bold;
+	list-style: none;
+	height: 100%;
 	margin-left: 0;
-	padding-left: 0;
-	border-radius: 24px;
-	padding: 6px 0;
+	padding: 4px 6px;
+	position: fixed;
+	right: 0px;
+	text-shadow: none;
+	top: 42px;
+	margin-top: 0;
+	user-select: none;
+	z-index: 1000;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	user-select: none;
 }
+
+.alphascroll li {
+	list-style: none;
+    line-height: 0.90em;
+    margin: 0;
+    padding: 3px 0;
+    text-align: center;
+    width: 27px;
+}
+
 .alphascroll:active {
 	background-color: rgba( 0, 0, 0, 0.8);
-	color: #fff;
 }
-.alphascroll li {
-	display: block;
-	text-align: center;
-	line-height: 12px;
-	margin: 0;
-	width: 20px;
-}
+
 .alphascroll li.truncated {
 	line-height: 4px;
 	font-size: 10px;
 	font-weight: normal;
+}
+
+.alphascroll.ui-alphascroll-d, .alphascroll.ui-alphascroll-d:active {
+	background-color: #c4e4fb;
+}
+
+.alphascroll.ui-alphascroll-e, .alphascroll.ui-alphascroll-e:active {
+	background-color: #ffc414;
 }
